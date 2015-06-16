@@ -31,10 +31,11 @@ public class MainActivity extends ActionBarActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mLatitudeText = (TextView)findViewById(R.id.latitude_text);
-        mLongitudeText = (TextView)findViewById(R.id.longitude_text);
+        mLatitudeText = (TextView) findViewById(R.id.latitude_text);
+        mLongitudeText = (TextView) findViewById(R.id.longitude_text);
         buildGoogleApiClient();
     }
+
     protected synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -42,6 +43,7 @@ public class MainActivity extends ActionBarActivity implements
                 .addApi(LocationServices.API)
                 .build();
     }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -55,30 +57,7 @@ public class MainActivity extends ActionBarActivity implements
             Log.d(TAG, "GoogleApiClient is disconnecting");
         }
     }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
+    
     @Override
     public void onConnected(Bundle bundle) {
         showLastKnowLocation();
@@ -95,19 +74,19 @@ public class MainActivity extends ActionBarActivity implements
         Log.i(TAG, "Connection failed: ConnectionResult.getErrorCode() = " + connectionResult.getErrorCode());
     }
 
-    public void getLastKnowLocation(View view){
+    public void getLastKnowLocation(View view) {
 
-        if(mGoogleApiClient.isConnected()||mGoogleApiClient.isConnecting()){
-            Log.d(TAG,"GoogleApiClient is connecting or connected");
+        if (mGoogleApiClient.isConnected() || mGoogleApiClient.isConnecting()) {
+            Log.d(TAG, "GoogleApiClient is connecting or connected");
             showLastKnowLocation();
-        }else{
+        } else {
             mGoogleApiClient.connect();
         }
 
 
     }
 
-    private void showLastKnowLocation(){
+    private void showLastKnowLocation() {
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLastLocation != null) {
             mLatitudeText.setText(String.valueOf(mLastLocation.getLatitude()));
@@ -117,9 +96,9 @@ public class MainActivity extends ActionBarActivity implements
         }
     }
 
-    public void goLocationMap(View view){
-        if(mLastLocation==null) return;
-        Uri uri = Uri.parse("geo:"+mLastLocation.getLatitude()+","+mLastLocation.getLongitude());
+    public void goLocationMap(View view) {
+        if (mLastLocation == null) return;
+        Uri uri = Uri.parse("geo:" + mLastLocation.getLatitude() + "," + mLastLocation.getLongitude());
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(uri);
         if (intent.resolveActivity(getPackageManager()) != null) {

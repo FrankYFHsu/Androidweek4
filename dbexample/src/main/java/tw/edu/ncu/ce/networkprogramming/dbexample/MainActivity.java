@@ -36,49 +36,26 @@ public class MainActivity extends ActionBarActivity {
 
     private Button mShowQueryButton;
     private ListView mListView;
-    private  AQXDbHelper mDbHelper;
+    private AQXDbHelper mDbHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mShowQueryButton = (Button)findViewById(R.id.button2);
+        mShowQueryButton = (Button) findViewById(R.id.button2);
         mShowQueryButton.setEnabled(false);
-        mListView = (ListView)findViewById(R.id.listView);
-         mDbHelper = new AQXDbHelper(MainActivity.this);
-
-
+        mListView = (ListView) findViewById(R.id.listView);
+        mDbHelper = new AQXDbHelper(MainActivity.this);
 
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-
-    public void downloadAQXSiteAndUpDb(View view ){
+    public void downloadAQXSiteAndUpDb(View view) {
         new DbInsertTask().execute();
     }
 
-    public void queryAQXSite(View view){
+    public void queryAQXSite(View view) {
         new DbQueryTask().execute();
 
     }
@@ -102,11 +79,9 @@ public class MainActivity extends ActionBarActivity {
 
 
                 if (conn.getResponseCode() == 200) {
-                    MainActivity.this.deleteDatabase(AQXDbHelper.DATABASE_NAME);//測試
+                    MainActivity.this.deleteDatabase(AQXDbHelper.DATABASE_NAME);//為了測試，所以每一次都重新建立
 
 
-
-                    //AQXDbHelper mDbHelper = new AQXDbHelper(MainActivity.this);
                     SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
                     Log.d(TAG, "connect successful");
@@ -207,14 +182,13 @@ public class MainActivity extends ActionBarActivity {
 
                     long itemID = c.getLong(
                             c.getColumnIndexOrThrow(AQXContract.AQXSiteEntry._ID));
-                    Log.d(TAG,"get itme:"+itemID);
 
                     String siteName = c.getString(c.getColumnIndexOrThrow(AQXContract.AQXSiteEntry.COLUMN_SITE_NAME));
                     float twd97Lat = c.getFloat(c.getColumnIndexOrThrow(AQXContract.AQXSiteEntry.COLUMN_TWD97LAT));
                     float twd97Lon = c.getFloat(c.getColumnIndexOrThrow(AQXContract.AQXSiteEntry.COLUMN_TWD97LON));
 
-                    result.add(itemID+", "+siteName+", "+twd97Lat+", "+twd97Lon);
-                }while (c.moveToNext());
+                    result.add(itemID + ", " + siteName + ", " + twd97Lat + ", " + twd97Lon);
+                } while (c.moveToNext());
 
 
             }
@@ -226,7 +200,6 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         protected void onPostExecute(List<String> result) {
-
 
 
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this,

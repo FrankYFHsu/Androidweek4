@@ -56,19 +56,6 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
-    public void temp() {
-        final String AQX_BASE_URL =
-                "http://opendata.epa.gov.tw/ws/Data/AQX/?";
-        final String FILTER_PARAM = "$filter";
-        final String FORMAT_PARAM = "format";
-        Uri builtUri = Uri.parse(AQX_BASE_URL).buildUpon()
-                .appendQueryParameter(FORMAT_PARAM, "json")
-                .appendQueryParameter(FILTER_PARAM, "SiteName eq '中壢'")
-                .build();
-
-
-    }
-
 
     public static String getJsonStringFromConnection(HttpURLConnection conn) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
@@ -321,7 +308,7 @@ public class MainActivity extends ActionBarActivity {
             Cursor c = db.query(
                     AQXContract.AQXEntry.TABLE_NAME,  // The table to query
                     projection,                               // The columns to return
-                    AQXContract.AQXEntry.COLUMN_PSI + " < ?",                                // The columns for the WHERE clause
+                    AQXContract.AQXEntry.COLUMN_PSI + " < ?", // The columns for the WHERE clause
                     selectionArgs,                            // The values for the WHERE clause
                     null,                                     // don't group the rows
                     null,                                     // don't filter by row groups
