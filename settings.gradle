@@ -1,1 +1,1 @@
-include ':getlastknowexample', ':dbexample', ':dbexample2', ':simpleairquality'
+include ':getlastknowexample', ':dbexample', ':dbexample2'
